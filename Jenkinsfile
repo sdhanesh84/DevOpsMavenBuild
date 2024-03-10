@@ -6,12 +6,14 @@ node(){
 		checkout changelog: false, poll: false, scm: scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubCreds', url: 'https://github.com/anujdevopslearn/MavenBuild']])
 	}
 	stage('Build Automation'){
-		sh """
-			ls -lart
-			mvn clean install
-			ls -lart target
+		withMaven(maven: 'mvn'){
+			sh """
+   				ls -lart
+				mvn clean install
+				ls -lart target
 
-		"""
+				"""
+		}
 	}
 	
 	stage('Code Scan'){
